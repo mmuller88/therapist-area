@@ -45,6 +45,11 @@
 			<groupId>org.jetbrains.kotlin</groupId>
 			<artifactId>kotlin-stdlib-jdk8</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.spotify</groupId>
+			<artifactId>dockerfile-maven-plugin</artifactId>
+			<version>1.4.10</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -86,10 +91,35 @@
 					</dependency>
 				</dependencies>
 			</plugin>
+			<!--<plugin>-->
+				<!--<groupId>com.spotify</groupId>-->
+				<!--<artifactId>dockerfile-maven-plugin</artifactId>-->
+				<!--<version>${dockerfile-maven-version}</version>-->
+				<!--<executions>-->
+					<!--<execution>-->
+						<!--<id>default</id>-->
+						<!--<goals>-->
+							<!--<goal>build</goal>-->
+							<!--<goal>push</goal>-->
+						<!--</goals>-->
+					<!--</execution>-->
+				<!--</executions>-->
+				<!--<configuration>-->
+					<!--<repository>chrissssss/springboot-hibernatespatial-postgis-demo</repository>-->
+					<!--<tag>${project.version}</tag>-->
+					<!--<buildArgs>-->
+						<!--<JAR_FILE>${project.build.finalName}.jar</JAR_FILE>-->
+					<!--</buildArgs>-->
+				<!--</configuration>-->
+			<!--</plugin>-->
 		</plugins>
 	</build>
 
 	<repositories>
+		<repository>
+			<id>Maven Central</id>
+			<url>http://central.maven.org/maven2/</url>
+		</repository>
 		<repository>
 			<id>Hibernate Spatial repo</id>
 			<url>http://www.hibernatespatial.org/repository</url>

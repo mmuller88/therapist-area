@@ -1,6 +1,5 @@
 package com.massagerelax.therapistarea.domain.entity
 
-import org.hibernate.annotations.Type
 import org.locationtech.jts.geom.Geometry
 import javax.persistence.*
 import javax.validation.constraints.Max
@@ -21,10 +20,10 @@ data class TherapistAreaEntity(
         @Size(max = 100)
         val name: String = "",
 
-//        @Type(type = "org.hibernate.spatial.GeometryType")
+//        @Column(columnDefinition = "geometry(Point,4326)")
         val geom: Geometry,
 
         @NotNull
         @Max(10)
-        val diameterKM: Double = 0.0
+        val radius: Double = 0.0
 )

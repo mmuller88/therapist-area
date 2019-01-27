@@ -21,10 +21,15 @@ class TherapistAreaApplication{
 	@Bean
 	fun databaseInitializer() = CommandLineRunner {
 		repository.deleteAllInBatch()
-		val tarea1 = TherapistAreaEntity(name = "Kenia Alves", geom = wktToGeometry("POINT(-105 40)"))
-		val tarea2 = TherapistAreaEntity(name = "Martin Mueller", geom = wktToGeometry("POINT(-108 40)"))
+		var tarea1 = TherapistAreaEntity(name = "Kenia Alves", geom = wktToGeometry("POINT(-105 40)"), radius = 5.0)
+		var tarea11 = TherapistAreaEntity(name = "Kenia Alves", geom = wktToGeometry("POINT(-120 40)"), radius = 5.0)
+		var tarea2 = TherapistAreaEntity(name = "Martin Mueller", geom = wktToGeometry("POINT(-111 40)"), radius = 5.0)
+		var tarea21 = TherapistAreaEntity(name = "Martin Mueller", geom = wktToGeometry("POINT(-111 40)"), radius = 10.0)
 
 		val tarea1Result = repository.save(tarea1)
+		val tarea11Result = repository.save(tarea11)
+		val tarea2Result = repository.save(tarea2)
+		val tarea21Result = repository.save(tarea21)
 
 		// fetch all customers
 		println("Customers found with findAll():")
@@ -39,10 +44,18 @@ class TherapistAreaApplication{
 		println(fetchArea1)
 		println()
 
-		println("Customers found within POLYGON((-107 39, -102 39, -102 41, -107 41, -107 39)):")
+		println("Therapists found within POLYGON((-107 39, -102 39, -102 41, -107 41, -107 39)):")
 		println("--------------------------------")
 		repository.findWithin(wktToGeometry("POLYGON((-107 39, -102 39, -102 41, -107 41, -107 39))"))
 				.forEach(::println)
+
+		println("Therapists with their radius found within POINT(-105 40):")
+		println("--------------------------------")
+		repository.findWithinTherapistRadius(wktToGeometry("POINT(-105 40)")).forEach(::println)
+
+		println("Therapists found within POINT(-105 40) and radius :")
+		println("--------------------------------")
+		repository.findWithinRadius(wktToGeometry("POINT(-105 40)"), 7.0).forEach(::println)
 
 	}
 
