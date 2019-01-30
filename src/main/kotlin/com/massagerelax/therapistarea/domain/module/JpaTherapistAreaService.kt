@@ -1,30 +1,40 @@
 package com.massagerelax.therapistarea.domain.module
 
+import com.massagerelax.therapistarea.domain.IdNotFoundException
 import com.massagerelax.therapistarea.domain.entity.TherapistAreaEntity
+import com.massagerelax.therapistarea.domain.repository.TherapistAreaRepository
 import org.springframework.stereotype.Service
 import javax.transaction.Transactional
 
 @Service
 @Transactional
-class JpaTherapistAreaService: TherapistAreaService{
+class JpaTherapistAreaService(val therapistAreaRepository: TherapistAreaRepository): TherapistAreaService{
     override fun retrieveArea(id: Long): TherapistAreaEntity {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return therapistAreaRepository.findById(id).orElseThrow { IdNotFoundException(id) }
     }
 
     override fun retrieveAreas(): List<TherapistAreaEntity> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return therapistAreaRepository.findAll()
     }
 
-    override fun addArea(therapist: TherapistAreaEntity): TherapistAreaEntity {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun addArea(therapistArea: TherapistAreaEntity): TherapistAreaEntity {
+        return therapistAreaRepository.save(therapistArea)
     }
 
-    override fun updateArea(id: Long, therapist: TherapistAreaEntity): TherapistAreaEntity {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun updateArea(id: Long, updateTherapistArea: TherapistAreaEntity): TherapistAreaEntity {
+        return therapistAreaRepository.findById(id).map {
+            existingTherapistArea -> val updatedTherapistArea = existingTherapistArea.copy(
+                name = updateTherapistArea.name,
+                geom = updateTherapistArea.geom,
+                radius = updateTherapistArea.radius)
+            therapistAreaRepository.save(updateTherapistArea)
+        }.orElseThrow { IdNotFoundException(id) }
     }
 
     override fun deleteArea(id: Long) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        therapistAreaRepository.findById(id).map { existingArea ->
+            therapistAreaRepository.delete(existingArea)
+        }.orElseThrow{ IdNotFoundException(id)}
     }
 
 }
