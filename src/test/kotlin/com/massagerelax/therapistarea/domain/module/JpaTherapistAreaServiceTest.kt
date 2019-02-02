@@ -20,6 +20,8 @@ import org.hamcrest.CoreMatchers.`is`
 import org.junit.jupiter.api.Assertions
 import org.mockito.BDDMockito
 import org.mockito.Mockito.doNothing
+import org.springframework.data.jpa.domain.AbstractPersistable_.id
+import java.math.BigDecimal
 
 
 @RunWith(MockitoJUnitRunner::class)
@@ -30,10 +32,10 @@ class JpaTherapistAreaServiceTest {
 
     lateinit var therapistAreaService: JpaTherapistAreaService
 
-    var tarea1 = TherapistAreaEntity(id=1, name = "Kenia Alves", geom = wktToGeometry("POINT(-105 40)"), radius = 5.0)
-    var tarea11 = TherapistAreaEntity(id=2,name = "Kenia Alves", geom = wktToGeometry("POINT(-120 40)"), radius = 5.0)
-    var tarea2 = TherapistAreaEntity(id=3,name = "Martin Mueller", geom = wktToGeometry("POINT(-111 40)"), radius = 5.0)
-    var tarea21 = TherapistAreaEntity(id=4,name = "Martin Mueller", geom = wktToGeometry("POINT(-111 40)"), radius = 10.0)
+    var tarea1 = TherapistAreaEntity(id=1, name = "Kenia Alves", location = wktToGeometry("POINT(-105 40)"), radius = BigDecimal(5.0))
+    var tarea11 = TherapistAreaEntity(id=2,name = "Kenia Alves", location = wktToGeometry("POINT(-120 40)"), radius = BigDecimal(5.0))
+    var tarea2 = TherapistAreaEntity(id=3,name = "Martin Mueller", location = wktToGeometry("POINT(-111 40)"), radius = BigDecimal(5.0))
+    var tarea21 = TherapistAreaEntity(id=4,name = "Martin Mueller", location = wktToGeometry("POINT(-111 40)"), radius = BigDecimal(10.0))
 
     @Before
     fun setup() {
@@ -69,7 +71,7 @@ class JpaTherapistAreaServiceTest {
 
     @Test
     fun updateArea() {
-        val updatedtArea1 = tarea1.copy(name = "Blub", radius = 4.0)
+        val updatedtArea1 = tarea1.copy(name = "Blub", radius = BigDecimal(4.0))
         given(therapistAreaRepository.findById(tarea1.id)).willReturn(Optional.of(tarea1))
         given(therapistAreaRepository.save(updatedtArea1)).willReturn(updatedtArea1)
         val retrieveUpdateArea = therapistAreaService.updateArea(updatedtArea1.id, updatedtArea1)

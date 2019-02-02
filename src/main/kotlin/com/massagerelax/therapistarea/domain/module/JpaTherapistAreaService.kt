@@ -25,9 +25,9 @@ class JpaTherapistAreaService(val therapistAreaRepository: TherapistAreaReposito
         return therapistAreaRepository.findById(id).map {
             existingTherapistArea -> val updatedTherapistArea = existingTherapistArea.copy(
                 name = updateTherapistArea.name,
-                geom = updateTherapistArea.geom,
+                location = updateTherapistArea.location,
                 radius = updateTherapistArea.radius)
-            therapistAreaRepository.save(updateTherapistArea)
+            therapistAreaRepository.save(updatedTherapistArea)
         }.orElseThrow { IdNotFoundException(id) }
     }
 
