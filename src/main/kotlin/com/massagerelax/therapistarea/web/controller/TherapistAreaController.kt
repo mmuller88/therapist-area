@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiResponses
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import java.math.BigDecimal
 import javax.validation.Valid
 
 @CrossOrigin(origins = ["http://localhost:4200"])
@@ -24,6 +25,24 @@ class TherapistAreaController(private val jpaTherapistAreaService: JpaTherapistA
     ])
     fun getAllTherapistAreas(): ResponseEntity<List<TherapistAreaDTO>> {
         return ResponseEntity.ok(jpaTherapistAreaService.retrieveAreas().map { therapistEntity -> therapistEntity.toDto()})
+    }
+
+    @GetMapping("/therapist-areas/long/{long}/lat/{lat}")
+    @ApiResponses(value = [
+        ApiResponse(code = 400, message = "Invalid parameter for long or lat", response = ErrorResponse::class),
+        ApiResponse(code = 401, message = "Authentication failed", response = ErrorResponse::class)
+    ])
+    fun getAllAreasWithinTherapistRadius(@PathVariable(value = "long") long: Double, @PathVariable(value = "lat") lat: Double): ResponseEntity<List<TherapistAreaDTO>> {
+        return ResponseEntity.ok(jpaTherapistAreaService.retrieveAreasWithinTherapistRadius(long, lat).map { therapistEntity -> therapistEntity.toDto()})
+    }
+
+    @GetMapping("/therapist-areas/long/{long}/lat/{lat}/radius/{radius}")
+    @ApiResponses(value = [
+        ApiResponse(code = 400, message = "Invalid parameter for long or lat or radius", response = ErrorResponse::class),
+        ApiResponse(code = 401, message = "Authentication failed", response = ErrorResponse::class)
+    ])
+    fun getAllAreasWithinRadius(@PathVariable(value = "long") long: Double, @PathVariable(value = "lat") lat: Double, @PathVariable(value = "radius") radius: BigDecimal): ResponseEntity<List<TherapistAreaDTO>> {
+        return ResponseEntity.ok(jpaTherapistAreaService.retrieveAreasWithinRadius(long, lat, radius).map { therapistEntity -> therapistEntity.toDto()})
     }
 
     @GetMapping("/therapist-areas/{areaId}")

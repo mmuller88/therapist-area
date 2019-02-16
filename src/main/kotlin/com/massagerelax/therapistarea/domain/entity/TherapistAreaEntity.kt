@@ -16,7 +16,7 @@ import javax.persistence.*
 import javax.validation.constraints.*
 
 @Entity
-@Table(name = "TherapistArea")
+@Table(name = "therapistarea")
 data class TherapistAreaEntity(
 
         @Id
