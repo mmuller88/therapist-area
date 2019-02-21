@@ -1,8 +1,16 @@
-container1:
-  image: chrissssss/springboot-hibernatespatial-postgis-demo:0.0.1-SNAPSHOT
-  links:
-    - container2
-container2:
-  image: mdillon/postgis
-  environment:
-    POSTGRES_PASSWORD: therapist
+version: "2"
+services:
+  therapist-area:
+    image: damadden88/therapist-area
+    links:
+      - postgis
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgis:5432/therapist
+    ports:
+      - 8082:8082
+
+  postgis:
+    image: mdillon/postgis
+    environment:
+      POSTGRES_PASSWORD: therapist
+      POSTGRES_DB: therapist

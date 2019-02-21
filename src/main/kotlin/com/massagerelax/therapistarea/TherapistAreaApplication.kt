@@ -77,7 +77,6 @@ class TherapistAreaApplication{
 }
 
 
-
 fun main(args: Array<String>) {
 	runApplication<TherapistAreaApplication>(*args)
 }

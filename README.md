@@ -6,10 +6,18 @@ Therapist area service for with several endpoints.
 
 
 ### How to run?
-
-* Make sure you have mongodb server up and running on `localhost`
+* Make sure you have PostGis server up and running on `localhost` 
+* `docker run -p 5432:5432 --env POSTGRES_PASSWORD=therapist --env POSTGRES_DB=therapist --name postgis mdillon/postgis`
 * `./mvnw clean install run`
 
+### Create Docker image
+* `./mvnw clean install dockerfile:build` or `./mvnw clean install -PbuildDocker`
+
+### Push Docker image to Docker Hub
+* `./mvnw dockerfile:push` or `./mvnw clean install -PreleaseDocker`
+
+### Run docker compose
+* `/docker-compose up`
 
 ### API Documentation
 
