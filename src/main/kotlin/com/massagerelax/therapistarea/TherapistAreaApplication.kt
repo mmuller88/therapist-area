@@ -34,11 +34,11 @@ class TherapistAreaApplication{
 		val tarea2Result = repository.save(tarea2)
 		val tarea21Result = repository.save(tarea21)
 
-		// fetch all customers
-		println("Customers found with findAll():")
-		println("-------------------------------")
-		repository.findAll().forEach(::println)
-		println()
+//		// fetch all customers
+//		println("Customers found with findAll():")
+//		println("-------------------------------")
+//		repository.findAll().forEach(::println)
+//		println()
 //
 //		// // fetch an individual customer by ID
 //		val fetchArea1 = repository.findById(tarea1Result.id).get()

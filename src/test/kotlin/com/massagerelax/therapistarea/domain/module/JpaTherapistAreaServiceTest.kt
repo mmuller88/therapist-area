@@ -3,7 +3,6 @@ package com.massagerelax.therapistarea.domain.module
 import com.massagerelax.therapistarea.domain.IdNotFoundException
 import com.massagerelax.therapistarea.domain.entity.TherapistAreaEntity
 import com.massagerelax.therapistarea.domain.repository.TherapistAreaRepository
-import org.hamcrest.CoreMatchers
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -18,9 +17,7 @@ import org.mockito.junit.MockitoJUnitRunner
 import java.util.*
 import org.hamcrest.CoreMatchers.`is`
 import org.junit.jupiter.api.Assertions
-import org.mockito.BDDMockito
 import org.mockito.Mockito.doNothing
-import org.springframework.data.jpa.domain.AbstractPersistable_.id
 import java.math.BigDecimal
 
 

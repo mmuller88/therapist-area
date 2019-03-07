@@ -1,18 +1,11 @@
 package com.massagerelax.therapistarea.web.controller
 
-import com.massagerelax.therapistarea.domain.entity.TherapistAreaEntity
 import com.massagerelax.therapistarea.web.support.ErrorResponse
 import com.massagerelax.therapistarea.domain.module.JpaTherapistAreaService
-import com.massagerelax.therapistarea.web.dto.CreateTherapistAreaDTO
-import com.massagerelax.therapistarea.web.dto.TherapistAreaDTO
-import com.massagerelax.therapistarea.web.dto.UpdateTherapistAreaDTO
 import io.swagger.annotations.ApiResponse
 import io.swagger.annotations.ApiResponses
-import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import java.math.BigDecimal
-import javax.validation.Valid
 
 @CrossOrigin(origins = ["http://localhost:4200"])
 @RestController

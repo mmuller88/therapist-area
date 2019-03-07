@@ -47,6 +47,7 @@ class TherapistAreaController(private val jpaTherapistAreaService: JpaTherapistA
 
     @GetMapping("/therapist-areas/{areaId}")
     @ApiResponses(value = [
+        ApiResponse(code = 400, message = "Invalid parameter for long or lat or radius", response = ErrorResponse::class),
         ApiResponse(code = 401, message = "Authentication failed", response = ErrorResponse::class),
         ApiResponse(code = 404, message = "AreaId don't exists", response = ErrorResponse::class)
     ])
