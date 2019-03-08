@@ -3,9 +3,6 @@ sudo: required
 language: java
 jdk:
   - oraclejdk8
-#  - openjdk11
-# Backwards compatibility with Java 8
-#  - oraclejdk8
 services:
   - docker
 
@@ -17,7 +14,7 @@ matrix:
   include:
   - name: "AllUnitTests"
     before_install:
-      - docker run -d -p 5432:5432 -e POSTGRES_PASSWORD=therapist -e POSTGRES_USER=postgres -e POSTGRES_DB=therapist mdillon/postgis postgis
-    script: travis_wait 20 mvn test
+      - docker run -d -p 5433:5432 -e POSTGRES_PASSWORD=therapist -e POSTGRES_USER=postgres -e POSTGRES_DB=therapist --name postgis mdillon/postgis
+    script: travis_wait 20 mvn test -Dspring.datasource.url=jdbc:postgresql://postgis:5433/therapist
 
 install: travis_retry mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
