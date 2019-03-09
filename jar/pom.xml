@@ -9,7 +9,7 @@
 
 	<parent>
 		<groupId>com.massagerelax</groupId>
-		<artifactId>therapist-area-parent</artifactId>
+		<artifactId>therapist-area</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 

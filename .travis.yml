@@ -15,6 +15,17 @@ matrix:
   - name: "AllUnitTests"
     before_install:
       - docker run -d -p 5433:5432 -e POSTGRES_PASSWORD=therapist -e POSTGRES_USER=postgres -e POSTGRES_DB=therapist --name postgis mdillon/postgis
-    script: travis_wait 20 mvn test -Dspring.datasource.url=jdbc:postgresql://localhost:5433/therapist
+    script: travis_wait 20 ./mvnw test -Dspring.datasource.url=jdbc:postgresql://localhost:5433/therapist
 
-install: travis_retry mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+install: travis_retry ./mvnw install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+
+deploy:
+  provider: script
+  script: ./mvnw clean install --settings .travis/settings.xml -PreleaseDocker -DskipTests
+  on:
+    branch: master
+
+before_install:
+  # troubleshooting info in case of problems
+  - docker version
+  - docker info
