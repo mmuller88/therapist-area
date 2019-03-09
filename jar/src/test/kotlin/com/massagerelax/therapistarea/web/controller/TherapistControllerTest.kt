@@ -1,27 +1,19 @@
 package com.massagerelax.therapistarea.web.controller
 
-import com.massagerelax.therapistarea.domain.entity.TherapistAreaEntity
 import com.massagerelax.therapistarea.domain.module.JpaTherapistAreaService
 import com.massagerelax.therapistarea.domain.repository.TherapistAreaRepository
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.Matchers.hasSize
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
-import org.junit.runner.RunWith
 
-import org.locationtech.jts.geom.Coordinate
-import org.locationtech.jts.geom.GeometryFactory
 import org.mockito.BDDMockito.given
-import org.mockito.junit.MockitoJUnitRunner
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.MediaType
-import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
-import java.math.BigDecimal
 
 @WebMvcTest(TherapistController::class)
 class TherapistControllerTest {

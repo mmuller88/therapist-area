@@ -11,13 +11,13 @@ Therapist area service for with several endpoints.
 * `./mvnw clean install spring-boot:run`
 
 ### Create Docker image
-* `./mvnw clean install dockerfile:build` or `./mvnw clean install -PbuildDocker`
+* `./mvnw clean install dockerfile:build` or `./mvnw clean install -PbuildDocker -DskipTests`
 
 ### Push Docker image to Docker Hub
 * `./mvnw dockerfile:push` or `./mvnw clean install -PreleaseDocker`
 
 ### Run docker compose
-* `/docker-compose up`
+* Go to /docker/test `/docker/docker-compose up`
 
 ### API Documentation
 

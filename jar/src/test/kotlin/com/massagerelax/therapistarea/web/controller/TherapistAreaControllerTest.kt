@@ -4,7 +4,6 @@ import com.massagerelax.therapistarea.domain.IdNotFoundException
 import com.massagerelax.therapistarea.domain.entity.TherapistAreaEntity
 import com.massagerelax.therapistarea.domain.module.JpaTherapistAreaService
 import com.massagerelax.therapistarea.domain.repository.TherapistAreaRepository
-import org.apache.catalina.security.SecurityConfig
 import org.junit.jupiter.api.Test
 
 import org.locationtech.jts.geom.Coordinate
@@ -19,11 +18,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.Matchers.hasSize
 import org.junit.jupiter.api.extension.ExtendWith
-import org.junit.runner.RunWith
-import org.mockito.junit.MockitoJUnitRunner
-import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit.jupiter.SpringExtension
-import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import java.math.BigDecimal
 

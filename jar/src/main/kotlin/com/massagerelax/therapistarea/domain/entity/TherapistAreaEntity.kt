@@ -10,7 +10,6 @@ import com.massagerelax.therapistarea.web.dto.UpdateTherapistAreaDTO
 import org.locationtech.jts.geom.Coordinate
 import org.locationtech.jts.geom.Geometry
 import org.locationtech.jts.geom.GeometryFactory
-import org.locationtech.jts.geom.Point
 import java.math.BigDecimal
 import javax.persistence.*
 import javax.validation.constraints.*

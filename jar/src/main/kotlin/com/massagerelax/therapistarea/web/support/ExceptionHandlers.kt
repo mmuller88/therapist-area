@@ -6,7 +6,6 @@ import com.massagerelax.therapistarea.web.support.ErrorResponseEntity.Companion.
 import com.massagerelax.therapistarea.web.support.ErrorResponseEntity.Companion.serverError
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.MessageSource
-import org.springframework.http.HttpStatus
 import org.springframework.validation.BindException
 import org.springframework.validation.BindingResult
 import org.springframework.web.bind.MethodArgumentNotValidException
@@ -14,8 +13,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import java.util.*
 import javax.validation.ConstraintViolationException
-import org.springframework.http.ResponseEntity
-import javax.validation.ConstraintViolation
 import org.springframework.transaction.TransactionSystemException
 import org.springframework.web.context.request.WebRequest
 
