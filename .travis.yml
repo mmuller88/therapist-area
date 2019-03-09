@@ -21,7 +21,7 @@ install: travis_retry ./mvnw install -DskipTests=true -Dmaven.javadoc.skip=true 
 
 deploy:
   provider: script
-  script: ./mvnw clean install --settings .travis/settings.xml -PreleaseDocker -DskipTests
+  script: ./mvnw clean install --settings .travis/settings.xml  -PreleaseDocker -DskipTests
   on:
     branch: master
 
