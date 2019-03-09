@@ -15,7 +15,7 @@
 
     <properties>
         <dockerfile-maven-version>1.4.9</dockerfile-maven-version>
-        <docker.image.prefix>damadden88</docker.image.prefix>
+        <docker.image.name>damadden88/therapist-area</docker.image.name>
     </properties>
 
     <dependencies>
@@ -59,7 +59,7 @@
                 <artifactId>dockerfile-maven-plugin</artifactId>
                 <version>${dockerfile-maven-version}</version>
                 <configuration>
-                    <repository>${docker.image.prefix}/${project.artifactId}</repository>
+                    <repository>${docker.image.name}</repository>
                     <!--<tag>${project.version}</tag>-->
                     <useMavenSettingsForAuth>true</useMavenSettingsForAuth>
                     <buildArgs>
