@@ -14,6 +14,7 @@
     </parent>
 
     <properties>
+        <feature.image.tag>feature</feature.image.tag>
         <dockerfile-maven-version>1.4.9</dockerfile-maven-version>
         <docker.image.name>damadden88/therapist-area</docker.image.name>
     </properties>
@@ -60,7 +61,6 @@
                 <version>${dockerfile-maven-version}</version>
                 <configuration>
                     <repository>${docker.image.name}</repository>
-                    <!--<tag>${project.version}</tag>-->
                     <useMavenSettingsForAuth>true</useMavenSettingsForAuth>
                     <buildArgs>
                         <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
@@ -93,13 +93,73 @@
             </build>
         </profile>
         <profile>
-            <id>releaseDocker</id>
+            <id>master</id>
             <build>
                 <plugins>
                     <plugin>
                         <groupId>com.spotify</groupId>
                         <artifactId>dockerfile-maven-plugin</artifactId>
                         <version>${dockerfile-maven-version}</version>
+                        <executions>
+                            <execution>
+                                <id>build-push-image</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>build</goal>
+                                    <goal>push</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>feature</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.spotify</groupId>
+                        <artifactId>dockerfile-maven-plugin</artifactId>
+                        <version>${dockerfile-maven-version}</version>
+                        <configuration>
+                            <repository>${docker.image.name}</repository>
+                            <tag>${feature.image.tag}</tag>
+                            <useMavenSettingsForAuth>true</useMavenSettingsForAuth>
+                            <buildArgs>
+                                <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
+                            </buildArgs>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>build-push-image</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>build</goal>
+                                    <goal>push</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.spotify</groupId>
+                        <artifactId>dockerfile-maven-plugin</artifactId>
+                        <version>${dockerfile-maven-version}</version>
+                        <configuration>
+                            <repository>${docker.image.name}</repository>
+                            <tag>${project.version}</tag>
+                            <useMavenSettingsForAuth>true</useMavenSettingsForAuth>
+                            <buildArgs>
+                                <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
+                            </buildArgs>
+                        </configuration>
                         <executions>
                             <execution>
                                 <id>build-push-image</id>
