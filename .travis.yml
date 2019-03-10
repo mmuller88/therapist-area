@@ -21,7 +21,8 @@ install: travis_retry ./mvnw install -DskipTests=true -Dmaven.javadoc.skip=true 
 
 after_success:
   - cp .travis/settings.xml $HOME/.m2/settings.xml
-  - if [ "$TRAVIS_BRANCH" = master ]; then
+  - |
+    if [ "$TRAVIS_BRANCH" = master ]; then
       ./mvnw clean install -Pmaster -DskipTests;
     else
       tag_name=`echo $TRAVIS_BRANCH | tr / - `;
