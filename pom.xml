@@ -17,22 +17,8 @@
 
 	<modules>
 		<module>jar</module>
+		<module>docker</module>
 	</modules>
-
-	<profiles>
-		<profile>
-			<id>buildDocker</id>
-			<modules>
-				<module>docker</module>
-			</modules>
-		</profile>
-		<profile>
-			<id>releaseDocker</id>
-			<modules>
-				<module>docker</module>
-			</modules>
-		</profile>
-	</profiles>
 
 	<repositories>
 		<repository>

@@ -14,7 +14,7 @@ Therapist area service for with several endpoints.
 * `./mvnw clean install dockerfile:build` or `./mvnw clean install -PbuildDocker -DskipTests`
 
 ### Push Docker image to Docker Hub
-* `./mvnw dockerfile:push` or `./mvnw clean install -PreleaseDocker`
+* `./mvnw clean install -Prelease`
 
 ### Run docker compose
 * Go to /docker/test `/docker/docker-compose up`
