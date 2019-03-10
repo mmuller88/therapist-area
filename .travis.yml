@@ -25,7 +25,7 @@ after_success:
       ./mvnw clean install -Pmaster -DskipTests;
     else
       tag_name=`echo $TRAVIS_BRANCH | tr / - `;
-      ./mvnw clean install -Pfeature -DskipTests -Dfeature.image.tag=$tag_name
+      ./mvnw clean install -Pfeature -DskipTests -Dfeature.image.tag=$tag_name;
     fi
 
 before_script:
