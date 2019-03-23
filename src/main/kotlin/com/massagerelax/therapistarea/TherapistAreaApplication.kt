@@ -10,10 +10,12 @@ import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
 import org.locationtech.jts.io.WKTReader
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient
 import java.math.BigDecimal
 
 
 @SpringBootApplication
+@EnableDiscoveryClient
 class TherapistAreaApplication{
 
 	@Autowired
