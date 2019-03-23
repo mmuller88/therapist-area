@@ -2,7 +2,6 @@ package com.massagerelax.therapistarea
 
 import com.massagerelax.therapistarea.domain.entity.TherapistAreaEntity
 import com.massagerelax.therapistarea.domain.repository.TherapistAreaRepository
-import org.bouncycastle.asn1.x500.style.RFC4519Style.name
 import org.locationtech.jts.geom.Geometry
 import org.locationtech.jts.io.ParseException
 import org.springframework.boot.CommandLineRunner
