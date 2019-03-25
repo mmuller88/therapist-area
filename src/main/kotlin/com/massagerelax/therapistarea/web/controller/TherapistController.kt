@@ -14,7 +14,6 @@ class TherapistController(private val jpaTherapistAreaService: JpaTherapistAreaS
 
     @GetMapping("/alive")
     @ApiResponses(value = [
-        ApiResponse(code = 400, message = "Invalid parameter for long or lat or radius", response = ErrorResponse::class),
         ApiResponse(code = 401, message = "Authentication failed", response = ErrorResponse::class)
     ])
     fun alive(): ResponseEntity<String> {
