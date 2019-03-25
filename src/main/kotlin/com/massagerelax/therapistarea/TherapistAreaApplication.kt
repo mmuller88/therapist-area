@@ -11,6 +11,7 @@ import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
 import org.locationtech.jts.io.WKTReader
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient
 import springfox.documentation.builders.ApiInfoBuilder
 import springfox.documentation.builders.PathSelectors
@@ -30,6 +31,22 @@ class TherapistAreaApplication{
 
 	@Autowired
 	lateinit var repository: TherapistAreaRepository
+
+	@Value("\${area.base.path:}")
+	lateinit var areaBasePath: String
+
+	@Bean
+	fun swaggerAreaApi10(servletContext: ServletContext) = Docket(DocumentationType.SWAGGER_2)
+			.pathProvider(object : RelativePathProvider(servletContext) {
+				override fun getApplicationBasePath(): String {
+					return areaBasePath
+				}
+			})
+			.select()
+			.apis(RequestHandlerSelectors.basePackage(TherapistAreaController::class.java.`package`.name))
+			.paths(PathSelectors.any())
+			.build()
+			.apiInfo(ApiInfoBuilder().version("1.0").title("Area API").description("Documentation Area API v1.0").build())
 
 	@Bean
 	fun databaseInitializer() = CommandLineRunner {
@@ -85,20 +102,6 @@ class TherapistAreaApplication{
 		return geom
 	}
 }
-
-@Bean
-fun swaggerAreaApi10(servletContext: ServletContext) = Docket(DocumentationType.SWAGGER_2)
-		.host("www.mydomain.com")
-		.pathProvider(object : RelativePathProvider(servletContext) {
-			override fun getApplicationBasePath(): String {
-				return "/area"
-			}
-		})
-		.select()
-		.apis(RequestHandlerSelectors.basePackage(TherapistAreaController::class.java.`package`.name))
-		.paths(PathSelectors.any())
-		.build()
-		.apiInfo(ApiInfoBuilder().version("1.0").title("Area API").description("Documentation Area API v1.0").build())
 
 fun main(args: Array<String>) {
 	runApplication<TherapistAreaApplication>(*args)
