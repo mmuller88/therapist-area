@@ -16,9 +16,11 @@ import springfox.documentation.builders.ApiInfoBuilder
 import springfox.documentation.builders.PathSelectors
 import springfox.documentation.builders.RequestHandlerSelectors
 import springfox.documentation.spi.DocumentationType
+import springfox.documentation.spring.web.paths.RelativePathProvider
 import springfox.documentation.spring.web.plugins.Docket
 import springfox.documentation.swagger2.annotations.EnableSwagger2
 import java.math.BigDecimal
+import javax.servlet.ServletContext
 
 
 @SpringBootApplication
@@ -85,7 +87,13 @@ class TherapistAreaApplication{
 }
 
 @Bean
-fun swaggerAreaApi10() = Docket(DocumentationType.SWAGGER_2)
+fun swaggerAreaApi10(servletContext: ServletContext) = Docket(DocumentationType.SWAGGER_2)
+		.host("www.mydomain.com")
+		.pathProvider(object : RelativePathProvider(servletContext) {
+			override fun getApplicationBasePath(): String {
+				return "/area"
+			}
+		})
 		.select()
 		.apis(RequestHandlerSelectors.basePackage(TherapistAreaController::class.java.`package`.name))
 		.paths(PathSelectors.any())
