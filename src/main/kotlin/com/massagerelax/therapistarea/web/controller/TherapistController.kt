@@ -12,6 +12,15 @@ import org.springframework.web.bind.annotation.*
 //@RequestMapping("/api")
 class TherapistController(private val jpaTherapistAreaService: JpaTherapistAreaService){
 
+    @GetMapping("/alive")
+    @ApiResponses(value = [
+        ApiResponse(code = 400, message = "Invalid parameter for long or lat or radius", response = ErrorResponse::class),
+        ApiResponse(code = 401, message = "Authentication failed", response = ErrorResponse::class)
+    ])
+    fun alive(): ResponseEntity<String> {
+        return ResponseEntity.ok("Alive")
+    }
+
     @GetMapping("/therapists/long/{long}/lat/{lat}")
     @ApiResponses(value = [
         ApiResponse(code = 400, message = "Invalid parameter for long or lat or radius", response = ErrorResponse::class),
