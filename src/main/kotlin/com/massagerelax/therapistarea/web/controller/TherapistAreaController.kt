@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*
 import java.math.BigDecimal
 import javax.validation.Valid
 
-//@CrossOrigin(origins = ["http://localhost:4200"])
+@CrossOrigin(origins = ["http://localhost:4200"])
 @RestController
 @RequestMapping("/api")
 class TherapistAreaController(private val jpaTherapistAreaService: JpaTherapistAreaService){
