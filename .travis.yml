@@ -12,21 +12,22 @@ cache:
   directories:
     - $HOME/.m2
 
-matrix:
+jobs:
   include:
-  - name: "AllUnitTests"
-    before_install:
-      - docker run -d -p 5433:5432 -e POSTGRES_PASSWORD=therapist -e POSTGRES_USER=postgres -e POSTGRES_DB=therapist --name postgis mdillon/postgis
-    script: travis_wait 20 mvn test -Dspring.datasource.url=jdbc:postgresql://localhost:5433/therapist
-  - name: "Docker Compose Postman Test"
-    before_install:
-      - cd test
-      - docker-compose config
-      - echo "Starting Therapist Area in Docker containers"
-      - docker-compose ps
-      - docker-compose pull
-      - docker-compose up -d
-      - |
+    - stage: test
+      name: "All Unit Tests"
+      script: |
+        docker run -d -p 5433:5432 -e POSTGRES_PASSWORD=therapist -e POSTGRES_USER=postgres -e POSTGRES_DB=therapist --name postgis mdillon/postgis
+        travis_wait 20 mvn test -Dspring.datasource.url=jdbc:postgresql://localhost:5433/therapist
+    - name: "Docker Compose Postman Test"
+      script: |
+        cd test
+        docker-compose config
+        echo "Starting Therapist Area in Docker containers"
+        docker-compose ps
+        docker-compose pull
+        docker-compose up -d
+
         WAIT_INTERVAL=1
         COUNTER=0
         TIMEOUT=100
@@ -51,34 +52,85 @@ matrix:
           echo "The last response code from /api/therapist-areas was $response"
           exit 1
         fi
-      - cd ..
-    script: travis_wait 30 node_modules/.bin/newman run test/area.postman_collection.json -e test/area.postman_environment.json
+        cd ..
+        travis_wait 30 node_modules/.bin/newman run test/area.postman_collection.json -e test/area.postman_environment.json
+    - stage: deploy
+      script: |
+        cp .travis/settings.xml $HOME/.m2/settings.xml
+        if [ "$TRAVIS_BRANCH" = master ]; then
+          mvn clean install -Pmaster -DskipTests;
+        else
+          tag_name=`echo $TRAVIS_BRANCH | tr / - `;
+          mvn clean install -Pfeature -DskipTests -Dfeature.image.tag=$tag_name;
+        fi
+
+#matrix:
+#  include:
+#  - name: "AllUnitTests"
+#    before_install:
+#      - docker run -d -p 5433:5432 -e POSTGRES_PASSWORD=therapist -e POSTGRES_USER=postgres -e POSTGRES_DB=therapist --name postgis mdillon/postgis
+#    script: travis_wait 20 mvn test -Dspring.datasource.url=jdbc:postgresql://localhost:5433/therapist
+#  - name: "Docker Compose Postman Test"
+#    before_install:
+#      - cd test
+#      - docker-compose config
+#      - echo "Starting Therapist Area in Docker containers"
+#      - docker-compose ps
+#      - docker-compose pull
+#      - docker-compose up -d
+#      - |
+#        WAIT_INTERVAL=1
+#        COUNTER=0
+#        TIMEOUT=100
+#        t0=`date +%s`
+#
+#        echo "Waiting for massagerelax area to start"
+#        response=$(curl --write-out %{http_code} --output /dev/null --silent http://localhost:8082/api/therapist-areas)
+#        until [ "200" -eq "$response" ] || [ "$COUNTER" -eq "$TIMEOUT" ]; do
+#          printf '.'
+#          sleep $WAIT_INTERVAL
+#          COUNTER=$(($COUNTER+$WAIT_INTERVAL))
+#          response=$(curl --write-out %{http_code} --output /dev/null --silent http://localhost:8082/api/therapist-areas)
+#        done
+#
+#        if (("$COUNTER" < "$TIMEOUT")) ; then
+#          t1=`date +%s`
+#          delta=$((($t1 - $t0)/60))
+#          echo "Area started in $delta minutes"
+#        else
+#          echo "Waited $COUNTER seconds"
+#          echo "Area could not start in time."
+#          echo "The last response code from /api/therapist-areas was $response"
+#          exit 1
+#        fi
+#      - cd ..
+#    script: travis_wait 30 node_modules/.bin/newman run test/area.postman_collection.json -e test/area.postman_environment.json
 
 install:
   - npm install newman
   - travis_retry mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 
-script:
-  - curl -Lo travis_after_all.py https://raw.github.com/dmakhno/travis_after_all/master/travis_after_all.py
+#script:
+#  - curl -Lo travis_after_all.py https://raw.github.com/dmakhno/travis_after_all/master/travis_after_all.py
 
-after_success:
-  - python travis_after_all.py https://api.travis-ci.com
-  - export $(cat .to_export_back)
-  - |
-    if [ "$BUILD_LEADER" = "YES" ]; then
-      if [ "$BUILD_AGGREGATE_STATUS" = "others_succeeded" ]; then
-        echo "All jobs succeeded! PUBLISHING..."
-        cp .travis/settings.xml $HOME/.m2/settings.xml
-        if [ "$TRAVIS_BRANCH" = master ]; then
-              mvn clean install -Pmaster -DskipTests;
-            else
-              tag_name=`echo $TRAVIS_BRANCH | tr / - `;
-              mvn clean install -Pfeature -DskipTests -Dfeature.image.tag=$tag_name;
-            fi
-      else
-        echo "Some jobs failed"
-      fi
-    fi
+#after_success:
+#  - python travis_after_all.py https://api.travis-ci.com
+#  - export $(cat .to_export_back)
+#  - |
+#    if [ "$BUILD_LEADER" = "YES" ]; then
+#      if [ "$BUILD_AGGREGATE_STATUS" = "others_succeeded" ]; then
+#        echo "All jobs succeeded! PUBLISHING..."
+#        cp .travis/settings.xml $HOME/.m2/settings.xml
+#        if [ "$TRAVIS_BRANCH" = master ]; then
+#              mvn clean install -Pmaster -DskipTests;
+#            else
+#              tag_name=`echo $TRAVIS_BRANCH | tr / - `;
+#              mvn clean install -Pfeature -DskipTests -Dfeature.image.tag=$tag_name;
+#            fi
+#      else
+#        echo "Some jobs failed"
+#      fi
+#    fi
 
 before_script:
   # Print build info that binary is compiled with.
