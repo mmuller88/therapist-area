@@ -17,7 +17,7 @@ matrix:
   - name: "AllUnitTests"
     before_install:
       - docker run -d -p 5433:5432 -e POSTGRES_PASSWORD=therapist -e POSTGRES_USER=postgres -e POSTGRES_DB=therapist --name postgis mdillon/postgis
-    script: travis_wait 20 ./mvnw test -Dspring.datasource.url=jdbc:postgresql://localhost:5433/therapist
+    script: travis_wait 20 mvn test -Dspring.datasource.url=jdbc:postgresql://localhost:5433/therapist
   - name: "Docker Compose Postman Test"
     before_install:
       - cd test
@@ -56,16 +56,16 @@ matrix:
 
 install:
   - npm install newman
-  - travis_retry ./mvnw install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+  - travis_retry mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 
 after_success:
   - cp .travis/settings.xml $HOME/.m2/settings.xml
   - |
     if [ "$TRAVIS_BRANCH" = master ]; then
-      ./mvnw clean install -Pmaster -DskipTests;
+      mvn clean install -Pmaster -DskipTests;
     else
       tag_name=`echo $TRAVIS_BRANCH | tr / - `;
-      ./mvnw clean install -Pfeature -DskipTests -Dfeature.image.tag=$tag_name;
+      mvn clean install -Pfeature -DskipTests -Dfeature.image.tag=$tag_name;
     fi
 
 before_script:
