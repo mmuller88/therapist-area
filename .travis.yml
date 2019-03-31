@@ -52,7 +52,7 @@ jobs:
           echo "The last response code from /api/therapist-areas was $response"
           exit 1
         fi
-
+        cd ..
         node_modules/.bin/newman run test/area.postman_collection.json -e test/area.postman_environment.json
     - stage: deploy
       name: "Push image to damadden88/therapist-area:${tag_name}"
