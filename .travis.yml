@@ -18,6 +18,40 @@ matrix:
     before_install:
       - docker run -d -p 5433:5432 -e POSTGRES_PASSWORD=therapist -e POSTGRES_USER=postgres -e POSTGRES_DB=therapist --name postgis mdillon/postgis
     script: travis_wait 20 ./mvnw test -Dspring.datasource.url=jdbc:postgresql://localhost:5433/therapist
+  - name: "Docker Compose Postman Test"
+      before_install:
+        - cd test
+        - docker-compose config
+        - echo "Starting Therapist Area in Docker containers"
+        - docker-compose ps
+        - docker-compose pull
+        - docker-compose up -d
+        - |
+          WAIT_INTERVAL=1
+          COUNTER=0
+          TIMEOUT=100
+          t0=`date +%s`
+
+          echo "Waiting for massagerelax area to start"
+          response=$(curl --write-out %{http_code} --output /dev/null --silent http://localhost:8082/api/therapist-areas)
+          until [ "200" -eq "$response" ] || [ "$COUNTER" -eq "$TIMEOUT" ]; do
+            printf '.'
+            sleep $WAIT_INTERVAL
+            COUNTER=$(($COUNTER+$WAIT_INTERVAL))
+            response=$(curl --write-out %{http_code} --output /dev/null --silent http://localhost:8082/api/therapist-areas)
+          done
+
+          if (("$COUNTER" < "$TIMEOUT")) ; then
+            t1=`date +%s`
+            delta=$((($t1 - $t0)/60))
+            echo "Area started in $delta minutes"
+          else
+            echo "Waited $COUNTER seconds"
+            echo "Area could not start in time."
+            echo "The last response code from /api/therapist-areas was $response"
+            exit 1
+          fi
+      script: travis_wait 30 node_modules/.bin/newman run test/area.postman_collection.json -e test/tests.postman_environment.json
 
 install:
   - npm install newman
@@ -32,9 +66,6 @@ after_success:
       tag_name=`echo $TRAVIS_BRANCH | tr / - `;
       ./mvnw clean install -Pfeature -DskipTests -Dfeature.image.tag=$tag_name;
     fi
-
-script:
-  - node_modules/.bin/newman run test/area.postman_collection.json -e test/tests.postman_environment.json
 
 before_script:
   # Print build info that binary is compiled with.
