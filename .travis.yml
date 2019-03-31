@@ -33,7 +33,7 @@ jobs:
         TIMEOUT=100
         t0=`date +%s`
 
-        echo "Waiting for massagerelax area to start"
+        echo "Waiting for Area to start"
         response=$(curl --write-out %{http_code} --output /dev/null --silent http://localhost:8082/api/therapist-areas)
         until [ "200" -eq "$response" ] || [ "$COUNTER" -eq "$TIMEOUT" ]; do
           printf '.'
@@ -52,10 +52,10 @@ jobs:
           echo "The last response code from /api/therapist-areas was $response"
           exit 1
         fi
-        cd ..
+
         node_modules/.bin/newman run test/area.postman_collection.json -e test/area.postman_environment.json
     - stage: deploy
-      name: "Push image to damadden88/therapist-area:$tag_name"
+      name: "Push image to damadden88/therapist-area:${tag_name}"
       script: |
         cp .travis/settings.xml $HOME/.m2/settings.xml
         if [ "$TRAVIS_BRANCH" = master ]; then
