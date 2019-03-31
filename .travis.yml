@@ -58,14 +58,26 @@ install:
   - npm install newman
   - travis_retry mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 
+script:
+  - curl -Lo travis_after_all.py https://raw.github.com/dmakhno/travis_after_all/master/travis_after_all.py
+
 after_success:
-  - cp .travis/settings.xml $HOME/.m2/settings.xml
+  - python travis_after_all.py https://api.travis-ci.com
+  - export $(cat .to_export_back)
   - |
-    if [ "$TRAVIS_BRANCH" = master ]; then
-      mvn clean install -Pmaster -DskipTests;
-    else
-      tag_name=`echo $TRAVIS_BRANCH | tr / - `;
-      mvn clean install -Pfeature -DskipTests -Dfeature.image.tag=$tag_name;
+    if [ "$BUILD_LEADER" = "YES" ]; then
+      if [ "$BUILD_AGGREGATE_STATUS" = "others_succeeded" ]; then
+        echo "All jobs succeeded! PUBLISHING..."
+        cp .travis/settings.xml $HOME/.m2/settings.xml
+        if [ "$TRAVIS_BRANCH" = master ]; then
+              mvn clean install -Pmaster -DskipTests;
+            else
+              tag_name=`echo $TRAVIS_BRANCH | tr / - `;
+              mvn clean install -Pfeature -DskipTests -Dfeature.image.tag=$tag_name;
+            fi
+      else
+        echo "Some jobs failed"
+      fi
     fi
 
 before_script:
