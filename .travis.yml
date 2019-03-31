@@ -52,7 +52,7 @@ matrix:
           exit 1
         fi
       - cd ..
-    script: travis_wait 30 node_modules/.bin/newman run test/area.postman_collection.json -e test/tests.postman_environment.json
+    script: travis_wait 30 node_modules/.bin/newman run test/area.postman_collection.json -e test/area.postman_environment.json
 
 install:
   - npm install newman
