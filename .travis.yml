@@ -53,8 +53,7 @@ jobs:
           exit 1
         fi
         cd ..
-        npm install newman
-        travis_wait 30 node_modules/.bin/newman run test/area.postman_collection.json -e test/area.postman_environment.json
+        node_modules/.bin/newman run test/area.postman_collection.json -e test/area.postman_environment.json
     - stage: deploy
       name: "Push image to damadden88/therapist-area:$tag_name"
       script: |
@@ -67,6 +66,7 @@ jobs:
         fi
 
 install:
+  - npm install newman
   - travis_retry mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 
 before_script:
