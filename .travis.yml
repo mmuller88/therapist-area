@@ -51,6 +51,7 @@ matrix:
           echo "The last response code from /api/therapist-areas was $response"
           exit 1
         fi
+      - cd ..
     script: travis_wait 30 node_modules/.bin/newman run test/area.postman_collection.json -e test/tests.postman_environment.json
 
 install:
