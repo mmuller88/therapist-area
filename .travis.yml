@@ -5,6 +5,8 @@ jdk:
   - oraclejdk8
 services:
   - docker
+node_js:
+  - "8.2.1"
 
 cache:
   directories:
@@ -17,7 +19,9 @@ matrix:
       - docker run -d -p 5433:5432 -e POSTGRES_PASSWORD=therapist -e POSTGRES_USER=postgres -e POSTGRES_DB=therapist --name postgis mdillon/postgis
     script: travis_wait 20 ./mvnw test -Dspring.datasource.url=jdbc:postgresql://localhost:5433/therapist
 
-install: travis_retry ./mvnw install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+install:
+  - npm install newman
+  - travis_retry ./mvnw install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 
 after_success:
   - cp .travis/settings.xml $HOME/.m2/settings.xml
@@ -29,6 +33,9 @@ after_success:
       ./mvnw clean install -Pfeature -DskipTests -Dfeature.image.tag=$tag_name;
     fi
 
+script:
+  - node_modules/.bin/newman run test/area.postman_collection.json -e test/tests.postman_environment.json
+
 before_script:
   # Print build info that binary is compiled with.
   - echo $TRAVIS_COMMIT
@@ -36,6 +43,9 @@ before_script:
   - echo $TRAVIS_BRANCH
   - echo $TRAVIS_BUILD_NUMBER
   - echo $TRAVIS_REPO_SLUG
+  - node --version
+  - npm --version
+  - node_modules/.bin/newman --version
 
 before_install:
   # troubleshooting info in case of problems

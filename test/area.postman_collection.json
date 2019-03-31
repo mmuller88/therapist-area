@@ -1,0 +1,132 @@
+{
+	"info": {
+		"_postman_id": "0779e9f3-3fb2-4b51-8d95-9a3b7e7b904f",
+		"name": "area",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "01 TherapistAreaController",
+			"item": [
+				{
+					"name": "GET therapist-areas",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "bac6b93d-c0b5-4f8e-89d3-7a508a58140f",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Array has length of 4\", function () {",
+									"    pm.expect(pm.response.json().length).to.eq(4);",
+									"});",
+									"",
+									"pm.environment.set(\"areaId\", pm.response.json()[0].id);",
+									"",
+									"console.log(\"areaId:\"+pm.environment.get(\"areaId\"));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{protocol}}://{{host}}:{{port}}{{prefix}}/therapist-areas/",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}{{prefix}}",
+							"path": [
+								"therapist-areas",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "51a3780d-d406-42b5-86c9-1e3589e65459",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "908ac288-4776-4789-8077-3b0eb3af344d",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "02 TherapistController",
+			"item": [
+				{
+					"name": "GET therapists/long/x/lat/y",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "bac6b93d-c0b5-4f8e-89d3-7a508a58140f",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Array has length of 2\", function () {",
+									"    pm.expect(pm.response.json().length).to.eq(2);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{protocol}}://{{host}}:{{port}}{{prefix}}/therapists/long/-105/lat/40",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}{{prefix}}",
+							"path": [
+								"therapists",
+								"long",
+								"-105",
+								"lat",
+								"40"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
